@@ -10,7 +10,7 @@ PKG_NAME:=luci-app-pptp-server
 
 # Version == major.minor.patch
 # increase on new functionality (minor) or patches (patch)
-PKG_VERSION:=0.1
+PKG_VERSION:=0.1.1
 
 # Release == build
 # increase on changes of translation files
@@ -21,7 +21,7 @@ PKG_MAINTAINER:=Ben Lapid <ben.lapid@gmail.com>
 
 # LuCI specific settings
 LUCI_TITLE:=LuCI GUI For PPTP Server
-LUCI_DEPENDS:=+pptpd +kmod-mppe +ppp
+LUCI_DEPENDS:=+pptpd +ppp
 LUCI_PKGARCH:=all
 # call BuildPackage - OpenWrt buildroot signature
 
@@ -39,7 +39,7 @@ define Package/$(PKG_NAME)
   CATEGORY:=services
   SUBMENU:=PPTP Server
   TITLE:=$(LUCI_TITLE)
-  DEPENDS:=
+  DEPENDS:=+pptpd +ppp
 endef
 
 define Package/$(PKG_NAME)/description
@@ -74,10 +74,10 @@ define Package/$(PKG_NAME)/install
 	  $(INSTALL_DIR) $(1)$(HTDOCS); \
 	  cp -pR $(PKG_BUILD_DIR)/htdocs/* $(1)$(HTDOCS)/; \
 	else true; fi
-	if [ -d $(PKG_BUILD_DIR)/root ]; then \
-	  $(INSTALL_DIR) $(1)/; \
-	  cp -pR $(PKG_BUILD_DIR)/root/* $(1)/; \
-	else true; fi
+	#if [ -d $(PKG_BUILD_DIR)/root ]; then \
+	#  $(INSTALL_DIR) $(1)/; \
+	#  cp -pR $(PKG_BUILD_DIR)/root/* $(1)/; \
+	#else true; fi
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))

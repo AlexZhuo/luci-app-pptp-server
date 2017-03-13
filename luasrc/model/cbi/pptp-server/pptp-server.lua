@@ -73,7 +73,7 @@ function mp.on_save(self)
 end
 
 
-local pid = luci.util.exec("/usr/bin/pgrep pptpd")
+local pid = luci.util.exec("netstat -nlp | grep pptpd | awk '{print $7}' | cut -d '/' -f 1")
 
 function pptpd_process_status()
   local status = "PPTPD is not running now and "
@@ -112,7 +112,7 @@ else
   stop = t:option(Button, "_stop", translate("Stop"))
   stop.inputstyle = "reset"
   function stop.write(self, section)
-        luci.util.exec("/etc/init.d/pptpd stop")
+        luci.util.exec("killall pptpd")
         luci.util.exec("sleep 4")
         luci.http.redirect(
                 luci.dispatcher.build_url("admin", "services", "pptp-server")
